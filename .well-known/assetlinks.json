@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lamineabdouraman.cryptochat",
+      "sha256_cert_fingerprints": [
+        "95:8E:E3:38:01:19:7D:1D:9A:6A:89:EC:05:57:06:0D:8D:15:57:0F:12:7D:1A:11:58:F7:8C:77:04:39:B4:F1"
+      ]
+    }
+  }
+]
