@@ -84,6 +84,10 @@ nav button.on{color:var(--green);font-weight:700}
 .chip.on{background:var(--green);color:#fff;border-color:var(--green)}
 select{font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--line);background:#fff}
 .link{color:var(--green);font-weight:700;font-size:14px;cursor:pointer}
+.invite{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:12px;align-items:center}
+.invite .ic{font-size:30px}.invite p{font-size:13px;color:var(--mute);margin-top:2px}.invite b{font-size:15px}
+.invite .btn{flex:none;padding:10px 14px}
+.hbtn{border:0;background:var(--green-l);color:var(--green);font-weight:700;font-size:13px;padding:6px 12px;border-radius:99px;cursor:pointer}
 .toast{position:absolute;left:16px;right:16px;bottom:84px;background:#1d2a24;color:#fff;border-radius:14px;padding:12px 16px;font-size:14px;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;z-index:20}
 .toast.show{opacity:1;transform:none}
 </style>
@@ -92,7 +96,7 @@ select{font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--line)
 <div class="phone" id="phone">
   <header>
     <h1>Re<span>klame</span></h1>
-    <span class="badge" id="count">0 neu</span>
+    <span style="display:flex;gap:8px;align-items:center"><button class="hbtn" data-invite>👥 Einladen</button><span class="badge" id="count">0 neu</span></span>
   </header>
 
   <main>
@@ -104,12 +108,14 @@ select{font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--line)
         <div class="big">📭</div>
         <h2>Postkasten leer!</h2>
         <p>Bis morgen gibt es nichts Neues – und es ist kein einziges Blatt Papier angefallen.</p>
+        <p style="margin-top:14px"><button class="btn buy" data-invite style="flex:none;padding:12px 22px">Freunde einladen</button></p>
         <p style="margin-top:14px"><span class="link" id="reset">Demo zurücksetzen</span></p>
       </div>
     </section>
 
     <!-- KLIMA -->
     <section class="screen" id="s-klima">
+      <div class="invite"><div class="ic">🤝</div><div style="flex:1"><b>Freunde einladen</b><p id="invTxt">Je mehr mitmachen, desto leerer die Postkästen.</p></div><button class="btn buy" data-invite>Einladen</button></div>
       <div class="hero">
         <div class="n" id="kgPapier">0</div>
         <div class="u">kg Papier vermieden seit Jänner</div>
@@ -193,7 +199,7 @@ const ADS = [
 ];
 const CATS=["Lebensmittel","Möbel","Elektronik","Mode","Gesundheit","Baumarkt","Gastro"];
 const PAPER=0.12, CO2=0.10;
-let S={deleted:[],buy:[],cats:["Lebensmittel","Möbel","Elektronik","Mode","Gesundheit"],blocked:[],sw:{daily:true,coupon:false,weekend:true}};
+let S={invites:0,deleted:[],buy:[],cats:["Lebensmittel","Möbel","Elektronik","Mode","Gesundheit"],blocked:[],sw:{daily:true,coupon:false,weekend:true}};
 try{const x=JSON.parse(localStorage.getItem("reklame")||"null");if(x)S=x}catch(e){}
 const save=()=>{try{localStorage.setItem("reklame",JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s);
@@ -231,6 +237,7 @@ function renderKlima(){
   $("#cntDel").textContent=Math.round(base/PAPER)+n;
   $("#bar").style.width=Math.min(100,kg)+"%";
   $("#barTxt").textContent=Math.round(kg)+" von 100 kg";
+  $("#invTxt").textContent=S.invites?("Du hast "+S.invites+" Einladung"+(S.invites>1?"en":"")+" verschickt. Danke fürs Weitersagen! 🌱"):"Je mehr mitmachen, desto leerer die Postkästen.";
   $("#rankKg").textContent=Math.round(kg+240)+" kg";
 }
 function del(id,fromSheet){
@@ -259,9 +266,10 @@ function openSheet(id){
 function closeSheet(){$("#sheet").classList.remove("open");current=null}
 
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-open],[data-del],[data-buy],[data-t],[data-k],.chip,#close,#shDel,#shBuy,#reset,#pickerl,#blocked");
+  const t=e.target.closest("[data-invite],[data-open],[data-del],[data-buy],[data-t],[data-k],.chip,#close,#shDel,#shBuy,#reset,#pickerl,#blocked");
   if(!t)return;
-  if(t.dataset.open)openSheet(+t.dataset.open);
+  if(t.hasAttribute("data-invite"))invite();
+  else if(t.dataset.open)openSheet(+t.dataset.open);
   else if(t.dataset.del)del(+t.dataset.del);
   else if(t.dataset.buy)buy(+t.dataset.buy);
   else if(t.dataset.t){
@@ -278,6 +286,17 @@ document.addEventListener("click",e=>{
   else if(t.id==="pickerl")toast("Pickerl wird per Post gesendet (Demo) 📮");
   else if(t.id==="blocked"&&S.blocked.length){S.blocked=[];save();render()}
 });
+async function invite(){
+  const url="https://lamine-abdouraman.github.io/reklame/";
+  const text="Ich ersetze die Reklame im Postkasten durch eine App – weniger Papier, trotzdem keine Angebote verpasst. Mach mit:";
+  let done=false;
+  try{ if(navigator.share){await navigator.share({title:"Reklame – Der grüne Postkasten",text,url});done=true} }catch(e){ if(e&&e.name==="AbortError")return }
+  if(!done){
+    try{await navigator.clipboard.writeText(text+" "+url);done=true;toast("Einladungslink kopiert – jetzt in WhatsApp & Co. einfügen 📋")}catch(e){}
+    if(!done){window.prompt("Einladungslink kopieren:",text+" "+url);done=true}
+  }
+  if(done){S.invites=(S.invites||0)+1;save();renderKlima()}
+}
 function chips(){$("#chips").innerHTML=CATS.map(c=>`<span class="chip ${S.cats.includes(c)?"on":""}" data-c="${c}">${c}</span>`).join("")}
 document.querySelectorAll(".sw").forEach(s=>s.classList.toggle("on",!!S.sw[s.dataset.k]));
 chips();render();
