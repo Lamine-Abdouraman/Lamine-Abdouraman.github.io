@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reklame – Der grüne Postkasten</title>
+<style>
+:root{--bg:#f4f1ea;--ink:#1d2a24;--mute:#5d6b63;--line:#e4e0d6;--green:#1f7a4d;--green-d:#155a38;--green-l:#e1f1e8}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.w{max-width:1000px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+nav b{font-size:22px}nav b span{color:var(--green)}
+nav a{color:var(--green);font-weight:700;text-decoration:none}
+.hero{padding:50px 0 60px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center}
+@media(max-width:800px){.hero{grid-template-columns:1fr}}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-1px}
+h1 em{font-style:normal;color:var(--green)}
+.lead{font-size:19px;color:var(--mute);margin:18px 0 26px}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:700;padding:14px 24px;border-radius:12px;text-decoration:none;border:0;font-size:16px;cursor:pointer}
+.btn.sec{background:#fff;color:var(--ink);border:1px solid var(--line);margin-left:8px}
+.mock{background:#111;border-radius:34px;padding:9px;max-width:270px;margin:auto;box-shadow:0 20px 50px #0003}
+.mock div.in{background:var(--bg);border-radius:26px;padding:16px 12px;height:430px;overflow:hidden}
+.mock .c{border-radius:14px;color:#fff;font-weight:800;padding:14px;margin-bottom:10px;height:92px;display:flex;align-items:flex-end;font-size:17px}
+.mock .t{font-size:17px;font-weight:800;margin-bottom:10px}.mock .t span{color:var(--green)}
+section{padding:46px 0}
+h2{font-size:30px;margin-bottom:8px;letter-spacing:-.5px}
+.sub{color:var(--mute);margin-bottom:24px}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:700px){.nums{grid-template-columns:1fr}}
+.num{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+.num b{font-size:40px;color:var(--green);display:block;line-height:1.1}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:700px){.steps{grid-template-columns:1fr}}
+.step{background:var(--green-l);border-radius:18px;padding:22px}
+.step i{font-style:normal;background:var(--green);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;margin-bottom:10px}
+.dark{background:var(--ink);color:#fff;border-radius:26px;padding:34px}
+.dark .sub{color:#b8c7be}
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.forms{grid-template-columns:1fr}}
+.card{background:#fff;color:var(--ink);border-radius:18px;padding:22px}
+.card h3{margin-bottom:4px}.card p{font-size:14px;color:var(--mute);margin-bottom:12px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:15px;margin-bottom:8px;background:#fff}
+.chk{font-size:12px;color:var(--mute);margin:4px 0 10px;display:flex;gap:6px}.chk input{width:auto;margin:3px 0 0}
+.ok{display:none;background:var(--green-l);color:var(--green-d);padding:12px;border-radius:10px;font-weight:700}
+.partners{display:flex;flex-wrap:wrap;gap:10px}
+.partners span{background:#fff;border:1px dashed var(--green);color:var(--green);border-radius:12px;padding:12px 18px;font-weight:700}
+footer{padding:30px 0 50px;color:var(--mute);font-size:13px}
+</style>
+</head>
+<body>
+<div class="w">
+<nav><b>Re<span>klame</span></b><a href="#join">Warteliste</a></nav>
+
+<div class="hero">
+  <div>
+    <h1>Dein Postkasten bleibt leer. <em>Deine Angebote nicht.</em></h1>
+    <p class="lead">Die Werbung der Firmen, die du magst, kommt digital aufs Handy. Ein Klick löscht sie, ein Klick führt zum Angebot. Kein Papier, kein Altpapier, kein Pickerl-Ärger.</p>
+    <a class="btn" href="#join">Auf die Warteliste</a><a class="btn sec" href="app.html">App-Prototyp ansehen</a><a class="btn sec" href="haendlerportal.html">Händlerportal</a>
+  </div>
+  <div class="mock"><div class="in">
+    <div class="t">Re<span>klame</span></div>
+    <div class="c" style="background:linear-gradient(135deg,#e11d48,#f97316)">Frischmarkt</div>
+    <div class="c" style="background:linear-gradient(135deg,#0f766e,#14b8a6)">Wohnlich Möbel</div>
+    <div class="c" style="background:linear-gradient(135deg,#4338ca,#7c3aed)">VoltPlus</div>
+  </div></div>
+</div>
+
+<section>
+  <h2>Das Problem liegt im Postkasten</h2>
+  <p class="sub">Zahlen von Umweltberatung Wien und GLOBAL 2000 – Primärquellen werden vor Launch noch gegengeprüft.</p>
+  <div class="nums">
+    <div class="num"><b>bis 100 kg</b>Werbematerial pro Wiener Haushalt und Jahr</div>
+    <div class="num"><b>~700 Mio.</b>Prospekte werden jährlich in Österreich gedruckt und zugestellt</div>
+    <div class="num"><b>257 kg</b>Papierverbrauch pro Kopf – fast doppelt so viel wie im EU-Schnitt</div>
+  </div>
+</section>
+
+<section>
+  <h2>So funktioniert's</h2>
+  <p class="sub">Drei Schritte zum leeren Postkasten.</p>
+  <div class="steps">
+    <div class="step"><i>1</i><b>Interessen wählen</b><br>Nur Kategorien und Firmen, die dich wirklich interessieren – in deinem Grätzl.</div>
+    <div class="step"><i>2</i><b>Pickerl drauf</b><br>„Bitte keine Werbung" – gratis zugeschickt. Die App übernimmt.</div>
+    <div class="step"><i>3</i><b>Klicken oder löschen</b><br>Angebot nutzen oder mit einem Klick entsorgen. Dein Klima-Zähler wächst.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Gründungspartner gesucht</h2>
+  <p class="sub">Wir starten mit einem Pilotbezirk in Wien und suchen Partner aus Stadt, Handel und Wissenschaft.</p>
+  <div class="partners"><span>Stadt Wien / MA 48</span><span>Handel &amp; Nahversorger</span><span>Österreichische Post</span><span>Umwelt-Organisationen</span><span>Universitäten (Ökobilanz)</span></div>
+</section>
+
+<section id="join">
+  <div class="dark">
+    <h2>Sei von Anfang an dabei</h2>
+    <p class="sub">Trag dich ein – wir melden uns, sobald der Pilot in deinem Bezirk startet.</p>
+    <div class="forms">
+      <form class="card" data-t="user">
+        <h3>Ich bin User</h3><p>Weniger Papier, bessere Angebote.</p>
+        <input required type="email" placeholder="E-Mail">
+        <input required type="text" placeholder="PLZ (z. B. 1070)" pattern="[0-9]{4}">
+        <label class="chk"><input required type="checkbox"> Ich willige ein, über den Start informiert zu werden. Jederzeit widerrufbar.</label>
+        <button class="btn" style="width:100%">Eintragen</button><div class="ok"></div>
+      </form>
+      <form class="card" data-t="firma">
+        <h3>Ich bin Firma</h3><p>Messbare Reichweite, ESG-Story, Gründungspartner-Paket.</p>
+        <input required type="text" placeholder="Firma">
+        <input required type="email" placeholder="E-Mail">
+        <select><option>Branche wählen</option><option>Lebensmittel</option><option>Möbel / Baumarkt</option><option>Elektronik</option><option>Mode / Sport</option><option>Lokal / Gastro</option></select>
+        <label class="chk"><input required type="checkbox"> Ich willige ein, kontaktiert zu werden. Jederzeit widerrufbar.</label>
+        <button class="btn" style="width:100%">Kontakt aufnehmen</button><div class="ok"></div>
+      </form>
+    </div>
+  </div>
+</section>
+<footer>Reklame · Konzeptphase · Prototyp-Seite: Formulare speichern nur lokal in deinem Browser, es wird nichts versendet. Vor dem Live-Gang: Impressum, Datenschutzerklärung, Double-Opt-in.</footer>
+</div>
+<script>
+document.querySelectorAll("form").forEach(f=>f.addEventListener("submit",e=>{
+  e.preventDefault();
+  try{const k="reklame-warteliste",l=JSON.parse(localStorage.getItem(k)||"[]");l.push({t:f.dataset.t,d:Date.now()});localStorage.setItem(k,JSON.stringify(l))}catch(x){}
+  const ok=f.querySelector(".ok");ok.style.display="block";
+  ok.textContent="Danke! (Demo – es wurde nichts gesendet.)";
+  f.querySelector("button").style.display="none";
+}));
+</script>
+</body>
+</html>

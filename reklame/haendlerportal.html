@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reklame – Händlerportal (Prototyp)</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#1d2a24;--mute:#6b7a72;--line:#e4e0d6;--green:#1f7a4d;--green-l:#e1f1e8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.top h1{font-size:20px}.top h1 span{color:var(--green)}
+.top .who{font-size:14px;color:var(--mute)}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 20px 60px}
+h2{font-size:18px;margin:26px 0 12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi b{font-size:28px;display:block}.kpi span{font-size:13px;color:var(--mute)}
+.kpi.g{background:var(--green);color:#fff;border:0}.kpi.g span{color:#dff3e7}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.5px;background:#faf8f3}
+tr:last-child td{border:0}
+.pill{padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.p-live{background:var(--green-l);color:var(--green)}.p-plan{background:#fef3c7;color:#92400e}.p-end{background:#eee;color:#666}
+.btn{border:0;background:var(--green);color:#fff;font-weight:700;padding:11px 18px;border-radius:10px;cursor:pointer;font-size:14px}
+.btn.sec{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.head{display:flex;justify-content:space-between;align-items:center}
+.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+label{display:block;font-size:13px;font-weight:600;margin:12px 0 5px}
+input[type=text],input[type=date],select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:13px;cursor:pointer;background:#fff}
+.chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:20px;text-align:center;color:var(--mute);font-size:14px;cursor:pointer}
+.drop.ok{border-color:var(--green);color:var(--green);background:var(--green-l)}
+.est{background:var(--green-l);border-radius:12px;padding:16px;position:sticky;top:12px}
+.est h3{font-size:14px;margin-bottom:10px}
+.est .r{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}
+.est .r.t{border-top:1px solid #b9dcc8;margin-top:6px;padding-top:10px;font-weight:800;font-size:17px}
+.note{font-size:12px;color:var(--mute);margin-top:10px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:10px}
+.bars div{flex:1;background:var(--green);border-radius:6px 6px 0 0;position:relative;min-height:4px}
+.bars span{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:11px;color:var(--mute)}
+#editor{display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1d2a24;color:#fff;padding:12px 20px;border-radius:12px;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="top"><h1>Re<span>klame</span> · Händlerportal</h1><div class="who">Frischmarkt GmbH (Demo) · Prototyp v0.1</div></div>
+<div class="wrap">
+
+<div id="dash">
+  <div class="kpis">
+    <div class="kpi"><b id="k1">0</b><span>zugestellte Sendungen (30 Tage)</span></div>
+    <div class="kpi"><b id="k2">0 %</b><span>Öffnungsrate</span></div>
+    <div class="kpi"><b id="k3">0 %</b><span>Klickrate zum Angebot</span></div>
+    <div class="kpi g"><b id="k4">0 kg</b><span>Papier eingespart*</span></div>
+  </div>
+
+  <div class="head"><h2>Kampagnen</h2><button class="btn" id="new">+ Neue Kampagne</button></div>
+  <table>
+    <thead><tr><th>Kampagne</th><th>Gebiet</th><th>Zeitraum</th><th>Zugestellt</th><th>Klicks</th><th>Status</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <h2>Öffnungen pro Wochentag (Demo)</h2>
+  <div class="panel"><div class="bars" id="bars"></div><div style="height:22px"></div></div>
+  <p class="note">*Demo-Annahme: 0,12 kg Papier je Prospekt. Alle Werte fiktiv und noch nicht wissenschaftlich geprüft.</p>
+</div>
+
+<div id="editor">
+  <div class="head"><h2 style="margin:0">Neue Kampagne</h2><button class="btn sec" id="back">← Zurück</button></div>
+  <div class="cols" style="margin-top:14px">
+    <div class="panel">
+      <label>Name der Kampagne</label>
+      <input type="text" id="name" value="Wochenaktion">
+      <label>Prospekt hochladen (PDF oder Bilder)</label>
+      <div class="drop" id="drop">📄 Datei hierher ziehen oder klicken (Demo)</div>
+      <label>Zielgebiet</label>
+      <select id="area">
+        <option value="0">Pilotbezirk 1070 Neubau</option>
+        <option value="1">Neubau + Nachbarbezirke (1060, 1080, 1090)</option>
+        <option value="2">Ganz Wien</option>
+      </select>
+      <label>Kategorien der User (nur Interessierte)</label>
+      <div class="chips" id="cats"></div>
+      <label>Start</label><input type="date" id="start">
+      <label>Dauer</label>
+      <select id="dur"><option value="7">1 Woche</option><option value="14">2 Wochen</option><option value="28">4 Wochen</option></select>
+      <label>Gutschein-Code (optional)</label>
+      <input type="text" id="code" placeholder="z. B. HERBST10">
+      <div style="margin-top:18px"><button class="btn" id="go">Zur Prüfung einreichen</button></div>
+    </div>
+    <div>
+      <div class="est">
+        <h3>Live-Schätzung</h3>
+        <div class="r"><span>Erreichbare User</span><b id="e1">–</b></div>
+        <div class="r"><span>Sendungen gesamt</span><b id="e2">–</b></div>
+        <div class="r"><span>Erwartete Klicks</span><b id="e3">–</b></div>
+        <div class="r"><span>Zustellkosten</span><b id="e4">–</b></div>
+        <div class="r"><span>Papier-Postwurf (Vergleich)</span><b id="e5">–</b></div>
+        <div class="r"><span>Papier eingespart</span><b id="e6">–</b></div>
+        <div class="r t"><span>Kosten Reklame</span><span id="e7">–</span></div>
+      </div>
+      <p class="note">Preis-Annahmen (Demo, ungeprüft): 0,02 € je Zustellung, 0,15 € je Klick, Papierwurf ca. 0,12 € je Haushalt. Reale Preise müssen noch recherchiert und validiert werden.</p>
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const f=n=>n.toLocaleString("de-AT");
+const eur=n=>n.toLocaleString("de-AT",{style:"currency",currency:"EUR"});
+const CATS=["Lebensmittel","Möbel","Elektronik","Mode","Gesundheit","Baumarkt","Gastro"];
+const REACH=[[3200,1.0],[11800,1.0],[48000,1.0]]; // Demo: angemeldete User je Gebiet
+const AREAS=["Neubau 1070","Neubau + Nachbarn","Ganz Wien"];
+let camps=[
+ {n:"Herbstaktion Obst & Gemüse",a:"Neubau 1070",z:"22.09.–05.10.",s:2950,c:410,st:"live"},
+ {n:"Weinwochen",a:"Neubau 1070",z:"08.09.–21.09.",s:3010,c:352,st:"end"},
+ {n:"Brot-Aktion",a:"Neubau + Nachbarn",z:"06.10.–19.10.",s:0,c:0,st:"plan"}];
+try{const x=JSON.parse(localStorage.getItem("reklame-portal")||"null");if(x)camps=x}catch(e){}
+const save=()=>{try{localStorage.setItem("reklame-portal",JSON.stringify(camps))}catch(e){}};
+let cats=["Lebensmittel"],file=false;
+
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2400)}
+function dash(){
+  const s=camps.reduce((x,c)=>x+c.s,0),c=camps.reduce((x,c)=>x+c.c,0);
+  $("#k1").textContent=f(s);$("#k2").textContent=s?"61 %":"–";
+  $("#k3").textContent=s?(c/s*100).toFixed(1).replace(".",",")+" %":"–";
+  $("#k4").textContent=Math.round(s*0.12)+" kg";
+  const lab={live:["Läuft","p-live"],plan:["In Prüfung","p-plan"],end:["Beendet","p-end"]};
+  $("#rows").innerHTML=camps.map(x=>`<tr><td><b>${x.n}</b></td><td>${x.a}</td><td>${x.z}</td><td>${f(x.s)}</td><td>${f(x.c)}</td><td><span class="pill ${lab[x.st][1]}">${lab[x.st][0]}</span></td></tr>`).join("");
+  const d=[["Mo",55],["Di",62],["Mi",70],["Do",88],["Fr",100],["Sa",76],["So",40]];
+  $("#bars").innerHTML=d.map(([l,h])=>`<div style="height:${h}%"><span>${l}</span></div>`).join("");
+}
+function est(){
+  const users=Math.round(REACH[$("#area").value][0]*Math.max(.25,cats.length/CATS.length+.15));
+  const n=Math.min(users,REACH[$("#area").value][0]);
+  const clicks=Math.round(n*.14),cost=n*.02+clicks*.15,paper=n*.12;
+  $("#e1").textContent=f(n);$("#e2").textContent=f(n);$("#e3").textContent="~"+f(clicks);
+  $("#e4").textContent=eur(n*.02+clicks*.15);$("#e5").textContent=eur(n*.12);
+  $("#e6").textContent=f(Math.round(paper))+" kg";$("#e7").textContent=eur(cost);
+}
+function chips(){$("#cats").innerHTML=CATS.map(c=>`<span class="chip ${cats.includes(c)?"on":""}" data-c="${c}">${c}</span>`).join("")}
+function show(ed){$("#dash").style.display=ed?"none":"block";$("#editor").style.display=ed?"block":"none";window.scrollTo(0,0)}
+
+$("#new").onclick=()=>{show(true);chips();est();$("#start").value=new Date().toISOString().slice(0,10)};
+$("#back").onclick=()=>show(false);
+$("#cats").onclick=e=>{const c=e.target.dataset.c;if(!c)return;cats=cats.includes(c)?cats.filter(x=>x!==c):[...cats,c];if(!cats.length)cats=[c];chips();est()};
+$("#area").onchange=est;
+$("#drop").onclick=()=>{file=true;$("#drop").classList.add("ok");$("#drop").textContent="✓ prospekt_herbst.pdf (Demo, 12 Seiten)"};
+$("#go").onclick=()=>{
+  if(!file){toast("Bitte zuerst einen Prospekt hochladen");return}
+  const s=new Date($("#start").value),e=new Date(s.getTime()+(+$("#dur").value)*864e5),fm=d=>d.toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"});
+  camps.unshift({n:$("#name").value||"Kampagne",a:AREAS[$("#area").value],z:fm(s)+"–"+fm(e),s:0,c:0,st:"plan"});
+  save();dash();show(false);toast("Eingereicht – Prüfung innerhalb von 24 h");
+};
+dash();
+</script>
+</body>
+</html>
